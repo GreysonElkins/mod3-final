@@ -72,6 +72,18 @@ describe('Order form', () => {
     expect(message).toBeInTheDocument()
   })
   
+  it('Should not allow a user to submit more than two of the same ingredient', () => {
+    const beans = screen.getByRole('button', {name: 'beans'})
+    fireEvent.click(beans)
+    fireEvent.click(beans) 
+    const orderText = screen.getByText("Order: beans, beans");
+    expect(orderText).toBeInTheDocument()
+    
+    fireEvent.click(beans) 
+    const orderTextTwo = screen.queryByText("Order: beans, beans, beans")
+    expect(orderText).toBeInTheDocument()
+    expect(orderTextTwo).not.toBeInTheDocument()
 
+  })
 
 })
