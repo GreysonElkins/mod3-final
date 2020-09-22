@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getOrders, postOrders, deleteOrders, deleteOrder } from '../../apiCalls';
+import { getOrders, postOrders, deleteOrder } from '../../apiCalls';
 import Orders from '../../components/Orders/Orders';
 import OrderForm from '../../components/OrderForm/OrderForm';
 

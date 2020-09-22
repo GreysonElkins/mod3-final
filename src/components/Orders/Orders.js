@@ -12,7 +12,7 @@ const Orders = props => {
           })}
         </ul>
         {order.id 
-          && <button id={`delete-${order.id}`} 
+          && <button title={`delete ticket ${order.id}`} 
               onClick={() => props.finishOrder(order.id)}
             >
               DONE

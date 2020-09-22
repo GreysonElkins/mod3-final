@@ -3,7 +3,7 @@ import { screen, render, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import App from "./App";
-import { getOrders, postOrders } from "../../apiCalls";
+import { getOrders, postOrders, deleteOrder } from "../../apiCalls";
 jest.mock('../../apiCalls.js')
 
 describe ('App', () => {
@@ -74,15 +74,21 @@ describe ('App', () => {
     expect(postOrders).toHaveBeenCalled()
     expect(postOrders).toHaveBeenCalledWith({name: 'George Harry', ingredients: ['beans', 'carnitas']})
 
-
-      
     await waitFor(() => {
       const harryCard = screen.getByText('George Harry')
       expect(harryCard).toBeInTheDocument()
     })
+  })
 
-    // it('should allow users to delete an order by clicking "DONE"' , () => {
-    //   const ringoCard = screen
-    // })
+  it('should allow users to delete an order by clicking "DONE"', async () => {
+    deleteOrder.mockResolvedValueOnce({ok: true})
+
+    const ringoCard = screen.queryByText('Ringo Star')
+    expect(ringoCard).toBeInTheDocument()
+    const ringoDoneButton = screen.getByRole('button', { name: 'delete ticket 1'})
+    fireEvent.click(ringoDoneButton)
+
+    await waitFor(() => expect(ringoCard).not.toBeInTheDocument())
   })
 })
+
