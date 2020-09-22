@@ -84,6 +84,8 @@ describe('Order form', () => {
     expect(orderText).toBeInTheDocument()
     expect(orderTextTwo).not.toBeInTheDocument()
 
+    const errorMessage = screen.queryByText(/The customer can't eat that much/i)
+    expect(errorMessage).toBeInTheDocument()
   })
 
 })
