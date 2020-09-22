@@ -9,21 +9,14 @@ jest.mock('../../apiCalls.js')
 describe ('App', () => {
   beforeEach(async () => {
     await waitFor(() => {
-      getOrders.mockResolvedValueOnce(
-        {
-          ok: true, 
-          json: () => { 
-            return {
-              orders: [{
-                id: 1,
-                name: 'Ringo Star', 
-                ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
-              }]
-            }
-          }
-        }    
-      )
-    })
+      getOrders.mockResolvedValueOnce({
+        orders: [{
+          id: 1,
+          name: 'Ringo Star', 
+          ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
+        }]
+      })
+    })  
     render(<App />)
   })
 
@@ -55,7 +48,17 @@ describe ('App', () => {
   })
 
   it('should allow users to submit new orders, and show those orders once posted', async () => {
-    await waitFor(() => {postOrders.mockResolvedValueOnce({ok: true})})
+    await waitFor(() => {postOrders.mockResolvedValueOnce({
+          ok: true, 
+          json: () => { 
+            return {
+                id: 2,
+                name: 'George Harry', 
+                ingredients: ['beans', 'carnitas']
+              }
+          }
+        })
+    })
 
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "George Harry" } });
@@ -76,7 +79,4 @@ describe ('App', () => {
       expect(harryCard).toBeInTheDocument()
     })
   })
-
-
-
 })
