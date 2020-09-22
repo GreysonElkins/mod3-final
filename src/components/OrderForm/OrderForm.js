@@ -5,6 +5,7 @@ class OrderForm extends Component {
     super();
     this.props = props;
     this.state = {
+      message: '',
       name: '',
       ingredients: []
     };
@@ -13,21 +14,25 @@ class OrderForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.clearInputs();
+    if (this.state.ingredients.length > 1 || this.state.name === '') {
+      this.setState({ message: 'You need to select at least one ingredient and provide a name' })
+    } else {
+      this.clearInputs();
+    }
   }
 
   handleIngredientChange = (e) => {
     e.preventDefault()
     const newList = [...this.state.ingredients, e.target.name]
-    this.setState({ ingredients: newList })
+    this.setState({ ingredients: newList, message: '' })
   }
 
   handleNameChange = (e) => {
-    this.setState({ name: e.target.value })
+    this.setState({ name: e.target.value, message: '' })
   }
 
   clearInputs = () => {
-    this.setState({name: '', ingredients: []});
+    this.setState({name: '', ingredients: [], message: ''});
   }
 
   render() {
@@ -53,7 +58,7 @@ class OrderForm extends Component {
         { ingredientButtons }
 
         <p>Order: { this.state.ingredients.join(', ') || 'Nothing selected' }</p>
-
+        <p>{this.state.message}</p>
         <button onClick={e => this.handleSubmit(e)}>
           Submit Order
         </button>
