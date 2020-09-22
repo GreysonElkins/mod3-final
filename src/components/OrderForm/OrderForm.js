@@ -14,7 +14,7 @@ class OrderForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    if (this.state.ingredients.length > 1 || this.state.name === '') {
+    if (this.state.ingredients.length < 1 || this.state.name === '') {
       this.setState({ message: 'You need to select at least one ingredient and provide a name' })
     } else {
       const order = {
