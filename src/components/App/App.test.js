@@ -47,7 +47,22 @@ describe ('App', () => {
   })
 
   it('should allow users to submit new orders, and show those orders once posted', async () => {
-    await waitFor(() => {postOrders.mockResolvedValueOnce({ok: true})})
+    
+    await waitFor(() => {
+      postOrders.mockResolvedValueOnce({ok: true})},
+      getOrders.mockResolvedValueOnce({orders: [
+            {
+              id: 1,
+              name: 'Ringo Star', 
+              ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
+            } , {
+              id: 2,
+              name: 'George Harry', 
+              ingredients: ['beans', 'carnitas']
+            }
+          ]})
+
+      )
 
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "George Harry" } });
@@ -63,6 +78,8 @@ describe ('App', () => {
     expect(postOrders).toHaveBeenCalled()
     expect(postOrders).toHaveBeenCalledWith({name: 'George Harry', ingredients: ['beans', 'carnitas']})
 
+
+      
     await waitFor(() => {
       const harryCard = screen.getByText('George Harry')
       expect(harryCard).toBeInTheDocument()
