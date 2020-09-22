@@ -84,6 +84,10 @@ describe ('App', () => {
       const harryCard = screen.getByText('George Harry')
       expect(harryCard).toBeInTheDocument()
     })
+
+    // it('should allow users to delete an order by clicking "DONE"' , () => {
+    //   const ringoCard = screen
+    // })
   })
 
 
