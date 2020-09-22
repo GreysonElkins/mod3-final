@@ -14,20 +14,29 @@ class App extends Component {
   }
 
   componentDidMount() {
-    getOrders().then(orders => {
-      this.setState({ orders: orders.orders })
-    })
-      .catch(err => console.error('Error fetching:', err));
+    this.updateOrders()
   }
 
   makeOrder = async (order) => {
     const response = await postOrders(order)
     if (response.ok) {
+      // I successfully took the response and used it directly in state with an id
+      // it broke my app tests, which I spent time trying to fix, but couldn't figure out what was wrong
+      // that work is on branch "post-response-ids"
       const allOrders = [...this.state.orders, order]
       this.setState({orders: allOrders})
+      this.updateOrders()
     } else {
       this.setState({message: 'Something went wrong, please try again.'})
     }
+  }
+
+  updateOrders = () => {
+     getOrders()
+       .then((orders) => {
+         this.setState({ orders: orders.orders });
+       })
+       .catch((err) => console.error("Error fetching:", err));
   }
 
   render() {
