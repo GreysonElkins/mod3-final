@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getOrders} from '../../apiCalls';
+import { getOrders, postOrders } from '../../apiCalls';
 import Orders from '../../components/Orders/Orders';
 import OrderForm from '../../components/OrderForm/OrderForm';
 
@@ -17,6 +17,16 @@ class App extends Component {
       this.setState({ orders: orders.orders })
     })
       .catch(err => console.error('Error fetching:', err));
+  }
+
+  makeOrder = async (order) => {
+    const response = await postOrders(order)
+    if (response.ok) {
+      const allOrders = [...this.state.orders, order]
+      this.setState({orders: allOrders})
+    } else {
+      this.setState({message: 'Something went wrong, please try again.'})
+    }
   }
 
   render() {
