@@ -28,8 +28,22 @@ class OrderForm extends Component {
 
   handleIngredientChange = (e) => {
     e.preventDefault()
-    const newList = [...this.state.ingredients, e.target.name]
-    this.setState({ ingredients: newList, message: '' })
+    const ingredient = e.target.name
+    if (!this.hasTooManyIngredient(ingredient)) {
+      const newList = [...this.state.ingredients, ingredient]
+      this.setState({ ingredients: newList, message: '' })
+    }
+  }
+
+  hasTooManyIngredient(ingredient) {
+    const qtyInCurrentOrder = this.state.ingredients.filter(ing => ing === ingredient)
+    if (qtyInCurrentOrder.length === 2) {
+      this.setState({ message: `The customer can't eat that much ${ingredient}, recommend something else` })
+      return true
+    } else {
+      return false
+    }
+
   }
 
   handleNameChange = (e) => {
