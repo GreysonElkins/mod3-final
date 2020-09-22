@@ -21,13 +21,18 @@ class App extends Component {
   }
 
   makeOrder = async (order) => {
-    const response = await postOrders(order)
-    if (response.ok) {
-      const allOrders = [...this.state.orders, order]
-      this.setState({orders: allOrders})
-    } else {
-      this.setState({message: 'Something went wrong, please try again.'})
-    }
+    let response
+    postOrders(order).then(res => {
+      response = res
+      return response.json()
+    }).then((postedOrder) => {
+      if (response.ok) {
+        const allOrders = [...this.state.orders, postedOrder]
+        this.setState({orders: allOrders})
+      } else {
+        this.setState({message: 'Something went wrong, please try again.'})
+      }
+    })
   }
 
   render() {

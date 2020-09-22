@@ -9,13 +9,21 @@ jest.mock('../../apiCalls.js')
 describe ('App', () => {
   beforeEach(async () => {
     await waitFor(() => {
-      getOrders.mockResolvedValueOnce({orders: [
-          {
-            name: 'Ringo Star', 
-            ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
+      getOrders.mockResolvedValueOnce(
+        {
+          ok: true, 
+          json: () => { 
+            return {
+              orders: [{
+                id: 1,
+                name: 'Ringo Star', 
+                ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
+              }]
+            }
           }
-        ]})
-      })
+        }    
+      )
+    })
     render(<App />)
   })
 
@@ -23,10 +31,10 @@ describe ('App', () => {
     getOrders.mockClear()
   })
 
-  it('should have a title', () => {
-    const title = screen.getByRole('heading', { name: 'Burrito Builder'})
+  it('should have a title', async () => {
+    const title = screen.queryByRole('heading', { name: 'Burrito Builder'})
 
-    expect(title).toBeInTheDocument()
+    await waitFor(() => expect(title).toBeInTheDocument())
   })
 
   it('should call a fetch for getting orders on load', () => {
