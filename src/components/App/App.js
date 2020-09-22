@@ -18,18 +18,18 @@ class App extends Component {
   }
 
   makeOrder = async (order) => {
-    const response = await postOrders(order)
-    if (response.ok) {
-      // I successfully took the response and used it directly in state with an id
-      // it broke my app tests, which I spent time trying to fix, but couldn't figure out what was wrong
-      // that work is on branch "post-response-ids"
-      const allOrders = [...this.state.orders, order]
-      this.setState({orders: allOrders})
-      this.updateOrders()
-    } else {
-      this.setState({message: 'Something went wrong, please try again.'})
-      // This would need something to remove it later once things are cool again
-    }
+    let response
+    postOrders(order).then(res => {
+      response = res
+      return response.json()
+    }).then((postedOrder) => {
+      if (response.ok) {
+        const allOrders = [...this.state.orders, postedOrder]
+        this.setState({orders: allOrders})
+      } else {
+        this.setState({message: 'Something went wrong, please try again.'})
+      }
+    })
   }
 
   updateOrders = () => {

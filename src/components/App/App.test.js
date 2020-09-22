@@ -9,13 +9,14 @@ jest.mock('../../apiCalls.js')
 describe ('App', () => {
   beforeEach(async () => {
     await waitFor(() => {
-      getOrders.mockResolvedValueOnce({orders: [
-          {
-            name: 'Ringo Star', 
-            ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
-          }
-        ]})
+      getOrders.mockResolvedValueOnce({
+        orders: [{
+          id: 1,
+          name: 'Ringo Star', 
+          ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
+        }]
       })
+    })  
     render(<App />)
   })
 
@@ -23,10 +24,10 @@ describe ('App', () => {
     getOrders.mockClear()
   })
 
-  it('should have a title', () => {
-    const title = screen.getByRole('heading', { name: 'Burrito Builder'})
+  it('should have a title', async () => {
+    const title = screen.queryByRole('heading', { name: 'Burrito Builder'})
 
-    expect(title).toBeInTheDocument()
+    await waitFor(() => expect(title).toBeInTheDocument())
   })
 
   it('should call a fetch for getting orders on load', () => {
@@ -47,22 +48,17 @@ describe ('App', () => {
   })
 
   it('should allow users to submit new orders, and show those orders once posted', async () => {
-    
-    await waitFor(() => {
-      postOrders.mockResolvedValueOnce({ok: true})},
-      getOrders.mockResolvedValueOnce({orders: [
-            {
-              id: 1,
-              name: 'Ringo Star', 
-              ingredients: ['lettuce', 'pico de gallo', 'guacamole', 'cilantro', 'sour cream']
-            } , {
-              id: 2,
-              name: 'George Harry', 
-              ingredients: ['beans', 'carnitas']
-            }
-          ]})
-
-      )
+    await waitFor(() => {postOrders.mockResolvedValueOnce({
+          ok: true, 
+          json: () => { 
+            return {
+                id: 2,
+                name: 'George Harry', 
+                ingredients: ['beans', 'carnitas']
+              }
+          }
+        })
+    })
 
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "George Harry" } });
@@ -89,7 +85,4 @@ describe ('App', () => {
     //   const ringoCard = screen
     // })
   })
-
-
-
 })
