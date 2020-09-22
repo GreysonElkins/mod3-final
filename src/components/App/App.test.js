@@ -40,10 +40,10 @@ describe ('App', () => {
 
   it('should load the OrderForm component', () => {
     const input = screen.getByRole("textbox");
-    const buttons = screen.getAllByRole("button");
+    const submit = screen.getByRole("button", { name: 'Submit Order' });
 
     expect(input).toBeInTheDocument();
-    expect(buttons).toHaveLength(13);
+    expect(submit).toBeInTheDocument();
   })
 
   it('should allow users to submit new orders, and show those orders once posted', async () => {

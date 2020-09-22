@@ -11,6 +11,12 @@ const Orders = props => {
             return <li>{ingredient}</li>
           })}
         </ul>
+        {order.id 
+          && <button 
+              onClick={() => props.finishOrder(order.id)}
+            >
+              DONE
+            </button>}
       </div>
     )
   });
