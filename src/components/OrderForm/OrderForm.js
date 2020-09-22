@@ -16,6 +16,16 @@ class OrderForm extends Component {
     this.clearInputs();
   }
 
+  handleIngredientChange = (e) => {
+    e.preventDefault()
+    const newList = [...this.state.ingredients, e.target.name]
+    this.setState({ ingredients: newList })
+  }
+
+  handleNameChange = (e) => {
+    this.setState({ name: e.target.value })
+  }
+
   clearInputs = () => {
     this.setState({name: '', ingredients: []});
   }
