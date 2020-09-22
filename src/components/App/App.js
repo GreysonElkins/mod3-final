@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super()
     this.state = {
-      orders: []
+      orders: [],
+      message: ''
     }
   }
 
@@ -34,9 +35,9 @@ class App extends Component {
       <main className="App">
         <header>
           <h1>Burrito Builder</h1>
-          <OrderForm />
+          <OrderForm makeOrder={this.makeOrder}/>
         </header>
-
+        <p>{this.state.message}</p>
         <Orders orders={this.state.orders}/>
       </main>
     );

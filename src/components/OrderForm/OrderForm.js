@@ -17,6 +17,11 @@ class OrderForm extends Component {
     if (this.state.ingredients.length > 1 || this.state.name === '') {
       this.setState({ message: 'You need to select at least one ingredient and provide a name' })
     } else {
+      const order = {
+        name: this.state.name,
+        ingredients: this.state.ingredients
+      }
+      this.props.makeOrder(order)
       this.clearInputs();
     }
   }
